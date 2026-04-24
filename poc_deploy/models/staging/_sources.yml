@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Raw source data from Snowflake"
+    # database: YOUR_DATABASE  # Uncomment and set your source database
+    # schema: YOUR_SCHEMA      # Uncomment and set your source schema
+    tables:
+      - name: example_table
+        description: "Example source table - replace with your actual source"
+        # columns:
+        #   - name: id
+        #     description: "Primary key"
+        #     tests:
+        #       - unique
+        #       - not_null

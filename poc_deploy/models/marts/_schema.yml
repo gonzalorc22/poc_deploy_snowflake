@@ -1,0 +1,15 @@
+version: 2
+
+models:
+  - name: mart_example
+    description: "Example marts model"
+    columns:
+      - name: id
+        description: "Primary key"
+        tests:
+          - unique
+          - not_null
+      - name: name
+        description: "Name field"
+      - name: loaded_at
+        description: "Timestamp when the record was loaded"
