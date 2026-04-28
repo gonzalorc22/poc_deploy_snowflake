@@ -1,4 +1,4 @@
-tasty_bytes:
+poc_deploy:
   target: dev
   outputs:
     dev:
