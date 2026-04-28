@@ -38,7 +38,7 @@ jobs:
       # If we configure this, we can remove this part https://docs.snowflake.com/en/user-guide/data-engineering/dbt-projects-on-snowflake-dependencies
       - name: Install dbt and run deps
         run: |
-          pip install dbt-snowflake==1.10.15
+          pip install dbt-snowflake
           dbt deps --project-dir ./poc_deploy --target prod -x
 
       # Deploy dbt project as a Snowflake object
