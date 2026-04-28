@@ -23,7 +23,7 @@ poc_deploy:
       account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
       database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
       schema: "{{ env_var('SNOWFLAKE_SCHEMA') }}"
-      role: 'SYSADMIN' # Use whichever role has USAGE on the database and schema
+      role: 'SYSADMIN' # Use whichever role has USAGE on the database and schema 
       type: snowflake
       warehouse: 'ARQDAT_PIPELINE_XS'
       user: "{{ env_var('SNOWFLAKE_USER') }}" # Put any value here, it will be overwritten by a GitHub repository secret
