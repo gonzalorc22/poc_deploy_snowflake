@@ -23,8 +23,8 @@ poc_deploy:
       account: '_' # Put any value here, it will be overwritten by a GitHub repository secret
       database: '_'
       schema: '_'
-      role: '_' # Use whichever role has USAGE on the database and schema
+      role: 'SYSADMIN' # Use whichever role has USAGE on the database and schema
       type: snowflake
-      warehouse: '_'
+      warehouse: 'ARQDAT_PIPELINE_XS'
       user: '_' # Put any value here, it will be overwritten by a GitHub repository secret
       threads: 8 # Snowflake recommends 8 threads
