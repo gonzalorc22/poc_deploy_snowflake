@@ -1,0 +1,30 @@
+# Profile for poc_deploy dbt project
+# IMPORTANT: Fill in your Snowflake credentials below before running dbt.
+#
+# This file should be placed at: ~/.dbt/profiles.yml
+# Or you can keep it here and use: dbt run --profiles-dir .
+
+poc_deploy:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: '<your_snowflake_account>'       # e.g. xy12345.eu-west-1
+      user: '<your_snowflake_user>'              # e.g. DBT_USER
+      password: '<your_snowflake_password>'      # Replace with your password
+      role: '<your_snowflake_role>'              # e.g. TRANSFORM
+      database: '<your_snowflake_database>'      # e.g. ANALYTICS
+      warehouse: '<your_snowflake_warehouse>'    # e.g. COMPUTE_WH
+      schema: '<your_snowflake_schema>'          # e.g. PUBLIC
+      threads: 4
+      client_session_keep_alive: False
+
+    prod:
+      account: '_' # Put any value here, it will be overwritten by a GitHub repository secret
+      database: '_'
+      schema: '_'
+      role: '_' # Use whichever role has USAGE on the database and schema
+      type: snowflake
+      warehouse: '_'
+      user: '_' # Put any value here, it will be overwritten by a GitHub repository secret
+      threads: 8 # Snowflake recommends 8 threads

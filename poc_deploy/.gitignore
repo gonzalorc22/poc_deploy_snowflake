@@ -4,7 +4,6 @@ dbt_packages/
 logs/
 
 # Credentials - NEVER commit
-profiles.yml
 .user.yml
 
 # dbt docs
