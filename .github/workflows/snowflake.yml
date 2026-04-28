@@ -19,6 +19,8 @@ jobs:
       SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
       SNOWFLAKE_DATABASE: ${{ vars.SNOWFLAKE_DATABASE }}
       SNOWFLAKE_SCHEMA: ${{ vars.SNOWFLAKE_SCHEMA }}
+      SNOWFLAKE_ROLE: ${{ vars.SNOWFLAKE_ROLE }}
+      SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
 
     steps:
       # Check out repository code
@@ -35,16 +37,9 @@ jobs:
       - name: Test Snowflake connection
         run: snow connection test -x
 
-      - name: Debug Environment Variables
-        run: |
-          echo "Variable SNOWFLAKE_DATABASE: $SNOWFLAKE_DATABASE"
-          env | grep SNOWFLAKE
-
       # If we configure this, we can remove this part https://docs.snowflake.com/en/user-guide/data-engineering/dbt-projects-on-snowflake-dependencies
-      - name: Install dbt and run deps
-        run: |
-          pip install dbt-snowflake
-          dbt deps --project-dir ./poc_deploy --target prod -x
+      - name: Install dbt dependencies
+        run: snow dbt deps --source ./poc_deploy
 
       # Deploy dbt project as a Snowflake object
       # --force creates the object or updates it if it already exists
