@@ -20,11 +20,12 @@ poc_deploy:
       client_session_keep_alive: False
 
     prod:
-      account: '_' # Put any value here, it will be overwritten by a GitHub repository secret
-      database: "{{ env_var('SNOWFLAKE_DATABASE') }}"
-      schema: "{{ env_var('SNOWFLAKE_SCHEMA') }}"
-      role: 'SYSADMIN' # Use whichever role has USAGE on the database and schema
       type: snowflake
-      warehouse: 'ARQDAT_PIPELINE_XS'
-      user: '_' # Put any value here, it will be overwritten by a GitHub repository secret
-      threads: 8 # Snowflake recommends 8 threads
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT', 'VACIO') }}"
+      user: "{{ env_var('SNOWFLAKE_USER', 'VACIO') }}"
+      password: "{{ env_var('SNOWFLAKE_PASSWORD', 'VACIO') }}"
+      role: "{{ env_var('SNOWFLAKE_ROLE', 'SYSADMIN') }}"
+      database: "{{ env_var('SNOWFLAKE_DATABASE', 'VACIO') }}"
+      warehouse: "{{ env_var('SNOWFLAKE_WAREHOUSE', 'ARQDAT_PIPELINE_XS') }}"
+      schema: "{{ env_var('SNOWFLAKE_SCHEMA', 'VACIO') }}"
+      threads: 8

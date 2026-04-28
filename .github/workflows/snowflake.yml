@@ -35,6 +35,11 @@ jobs:
       - name: Test Snowflake connection
         run: snow connection test -x
 
+      - name: Debug Environment Variables
+        run: |
+          echo "Variable SNOWFLAKE_DATABASE: $SNOWFLAKE_DATABASE"
+          env | grep SNOWFLAKE
+
       # If we configure this, we can remove this part https://docs.snowflake.com/en/user-guide/data-engineering/dbt-projects-on-snowflake-dependencies
       - name: Install dbt and run deps
         run: |
