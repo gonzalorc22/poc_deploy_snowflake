@@ -31,7 +31,7 @@ jobs:
       - name: Check Snowflake CLI Version
         run: snow --version
 
-      # Test the connection using a temporary connection
+      # Test the connection using a temporary conn
       - name: Test Snowflake connection
         run: snow connection test -x
 
