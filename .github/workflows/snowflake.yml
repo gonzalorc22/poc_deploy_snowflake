@@ -35,12 +35,18 @@ jobs:
       - name: Test Snowflake connection
         run: snow connection test -x
 
+      # If we configure this, we can remove this part https://docs.snowflake.com/en/user-guide/data-engineering/dbt-projects-on-snowflake-dependencies
+      - name: Install dbt and run deps
+        run: |
+          pip install dbt-snowflake==1.10.15
+          dbt deps --project-dir ./poc_deploy --target prod -x
+
       # Deploy dbt project as a Snowflake object
       # --force creates the object or updates it if it already exists
       # --source points to the dbt project directory
       # --default-target ensures the dbt project compiles and executes with your prod target
       - name: Deploy dbt project to ${{ vars.SNOWFLAKE_DATABASE }}.${{ vars.SNOWFLAKE_SCHEMA }}
-        run: snow dbt deploy poc_deploy_dbt_object --source ./poc_deploy --default-target prod --dbt-version 1.10.15 --install-local-deps --force -x
+        run: snow dbt deploy poc_deploy_dbt_object --source ./poc_deploy --default-target prod --dbt-version 1.10.15 --force -x
 
       - name: List all dbt project objects
         run: snow dbt list -x
