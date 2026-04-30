@@ -45,11 +45,11 @@ jobs:
         with:
           python-version: '3.10'
 
-      - name: Install dbt
-        run: pip install dbt-snowflake
+      - name: Install Snowflake CLI
+        uses: snowflakedb/snowflake-cli-action@v2.0
 
       - name: Install dbt dependencies
-        run: dbt deps --project-dir ./poc_deploy
+        run: snow dbt deps --project-dir ./poc_deploy -x
 
       - name: Run dbt test
-        run: dbt test --project-dir ./poc_deploy --profiles-dir ./poc_deploy --target ${{ github.base_ref == 'prod' && 'prod' || 'dev' }}
+        run: snow dbt test --project-dir ./poc_deploy --target ${{ github.base_ref == 'prod' && 'prod' || 'dev' }} -x
