@@ -48,8 +48,11 @@ jobs:
       - name: Install Snowflake CLI
         uses: snowflakedb/snowflake-cli-action@v2.0
 
-      - name: Install dbt dependencies
-        run: snow dbt deps --project-dir ./poc_deploy -x
+      # If we configure this, we can remove this part https://docs.snowflake.com/en/user-guide/data-engineering/dbt-projects-on-snowflake-dependencies
+      - name: Install dbt and run deps
+        run: |
+          pip install dbt-snowflake
+          dbt deps --project-dir ./poc_deploy --target ${{ github.ref_name }} -x
 
       - name: Run dbt test
-        run: snow dbt test --project-dir ./poc_deploy --target ${{ github.base_ref == 'prod' && 'prod' || 'dev' }} -x
+        run: snow dbt test --project-dir ./poc_deploy --target ${{ github.ref_name }} -x
