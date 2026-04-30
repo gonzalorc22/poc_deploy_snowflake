@@ -19,4 +19,4 @@ poc_deploy:
       type: snowflake
       warehouse: ARQDAT_PIPELINE_XS
       user: '_' # Put any value here, it will be overwritten by a GitHub repository secret
-      threads: 8 # Snowflake recommends 8 threads
+      threads: 8 # Snowflake recommends 8 threads 
