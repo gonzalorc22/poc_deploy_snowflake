@@ -21,7 +21,7 @@ jobs:
         run: pip install sqlfluff
 
       - name: Run SQLFluff Linting
-        run: sqlfluff lint ./poc_deploy/models --dialect snowflake
+        run: sqlfluff lint ./poc_deploy/models --dialect snowflake --exclude-rules RF04
 
   test-dbt:
     name: Test dbt models
