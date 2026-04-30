@@ -1,0 +1,53 @@
+name: PR Checks
+
+on:
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  lint-sql:
+    name: Lint dbt models
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install SQLFluff
+        run: pip install sqlfluff
+
+      - name: Run SQLFluff Linting
+        run: sqlfluff lint ./poc_deploy/models --dialect snowflake
+
+  test-dbt:
+    name: Test dbt models
+    runs-on: ubuntu-latest
+    environment: ${{ github.base_ref }}
+    if: ${{ !contains(github.event.pull_request.title, '[skip test]') && !contains(github.event.pull_request.body, '[skip test]') }}
+    env:
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+      SNOWFLAKE_DATABASE: ${{ vars.SNOWFLAKE_DATABASE }}
+      SNOWFLAKE_SCHEMA: ${{ vars.SNOWFLAKE_SCHEMA }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dbt
+        run: pip install dbt-snowflake
+
+      - name: Install dbt dependencies
+        run: dbt deps --project-dir ./poc_deploy
+
+      - name: Run dbt test
+        run: dbt test --project-dir ./poc_deploy --target ${{ github.base_ref == 'prod' && 'prod' || 'dev' }}

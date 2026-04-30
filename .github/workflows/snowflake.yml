@@ -41,6 +41,7 @@ jobs:
           pip install dbt-snowflake
           dbt deps --project-dir ./poc_deploy --target ${{ github.ref_name }} -x
 
+
       # Deploy dbt project as a Snowflake object
       # --force creates the object or updates it if it already exists
       # --source points to the dbt project directory
