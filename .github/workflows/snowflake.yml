@@ -2,7 +2,7 @@ name: PR Accepted Deployment
 run-name: PR from ${{ github.actor }} accepted - triggered a ${{ github.event_name }}
 on:
   push:
-    branches: [ main ]
+    branches: [ prod, dev ]
 
 permissions:
   contents: read
@@ -11,7 +11,7 @@ jobs:
   run-snowflake-dbt-job:
     name: "Run on Accepted PR"
     runs-on: ubuntu-latest
-    environment: prod
+    environment: ${{ github.ref_name }}
     env:
       SNOWFLAKE_CLI_FEATURES_ENABLE_DBT: true
       SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
@@ -39,18 +39,28 @@ jobs:
       - name: Install dbt and run deps
         run: |
           pip install dbt-snowflake
-          dbt deps --project-dir ./poc_deploy --target prod -x
+          dbt deps --project-dir ./poc_deploy --target ${{ github.ref_name }} -x
 
       # Deploy dbt project as a Snowflake object
       # --force creates the object or updates it if it already exists
       # --source points to the dbt project directory
       # --default-target ensures the dbt project compiles and executes with your prod target
       - name: Deploy dbt project to ${{ vars.SNOWFLAKE_DATABASE }}.${{ vars.SNOWFLAKE_SCHEMA }}
-        run: snow dbt deploy poc_deploy_dbt_object --source ./poc_deploy --default-target prod --dbt-version 1.10.15 --force -x
+        run: snow dbt deploy poc_deploy_dbt_object --source ./poc_deploy --default-target ${{ github.ref_name }} --dbt-version 1.10.15 --force -x
 
       - name: List all dbt project objects
         run: snow dbt list -x
 
-      # (optional) Uncomment the lines below if you want to manage Task orchestration via source control
-      # - name: Run schedules.sql to create or alter tasks for poc_deploy_dbt_object
-      #   run: snow sql -f ${{ github.workspace }}/poc_deploy/schedules.sql -x
+      - name: Execute dbt project (Dev environment)
+        if: github.ref_name == 'dev'
+        run: |
+          snow sql -q "EXECUTE DBT PROJECT poc_deploy_dbt_object" -x
+
+      - name: Create or alter task for dbt project (Prod environment)
+        if: github.ref_name == 'prod'
+        run: |
+          snow sql -q "CREATE OR ALTER TASK run_tasty_bytes_subset
+            WAREHOUSE = ARQDAT_PIPELINE_XS
+            SCHEDULE = '12 hours'
+            AS
+            EXECUTE DBT PROJECT poc_deploy_dbt_object" -x

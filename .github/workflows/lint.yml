@@ -1,0 +1,30 @@
+name: SQL Linter (SQLFluff)
+
+on:
+  pull_request:
+    branches: [ dev ]
+
+jobs:
+  lint-sql:
+    name: Lint dbt models
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install SQLFluff
+        run: |
+          pip install sqlfluff
+          # Si usas macros muy complejas de dbt, puedes necesitar el templater de dbt:
+          # pip install sqlfluff sqlfluff-templater-dbt dbt-snowflake
+
+      - name: Run SQLFluff Linting
+        run: |
+          # Revisa la carpeta de modelos usando el dialecto de snowflake
+          sqlfluff lint ./poc_deploy/models --dialect snowflake

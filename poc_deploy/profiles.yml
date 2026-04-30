@@ -3,13 +3,13 @@ poc_deploy:
   outputs:
     dev:
       account: '_' # Put any value here, it will be overwritten by a GitHub repository secret
-      database: tasty_bytes_dbt_db
-      schema: dev
-      role: ACCOUNTADMIN # Use whichever role has USAGE on the database and schema
+      database: POC_CD_DBT_PROJECT
+      schema: DEV
+      role: SYSADMIN # Use whichever role has USAGE on the database and schema
       type: snowflake
-      warehouse: tasty_bytes_dbt_wh
+      warehouse: ARQDAT_PIPELINE_XS
       user: '_' # Put any value here, it will be overwritten by a GitHub repository secret
-      threads: 8 # Snowflake recommends 8 threads
+      threads: 8 # Snowflake recommends 8 threads 
 
     prod:
       account: '_' # Put any value here, it will be overwritten by a GitHub repository secret
