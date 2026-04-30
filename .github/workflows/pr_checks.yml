@@ -50,4 +50,4 @@ jobs:
         run: dbt deps --project-dir ./poc_deploy
 
       - name: Run dbt test
-        run: dbt test --project-dir ./poc_deploy --target ${{ github.base_ref == 'prod' && 'prod' || 'dev' }}
+        run: dbt test --project-dir ./poc_deploy --profiles-dir ./poc_deploy --target ${{ github.base_ref == 'prod' && 'prod' || 'dev' }}
