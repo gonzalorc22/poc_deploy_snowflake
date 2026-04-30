@@ -29,11 +29,13 @@ jobs:
     environment: ${{ github.base_ref }}
     if: ${{ !contains(github.event.pull_request.title, '[skip test]') && !contains(github.event.pull_request.body, '[skip test]') }}
     env:
+      SNOWFLAKE_CLI_FEATURES_ENABLE_DBT: true
       SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
       SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
       SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
       SNOWFLAKE_DATABASE: ${{ vars.SNOWFLAKE_DATABASE }}
       SNOWFLAKE_SCHEMA: ${{ vars.SNOWFLAKE_SCHEMA }}
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
