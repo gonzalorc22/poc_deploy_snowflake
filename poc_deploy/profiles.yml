@@ -17,6 +17,6 @@ poc_deploy:
       schema: PROD
       role: SYSADMIN # Use whichever role has USAGE on the database and schema
       type: snowflake
-      warehouse: ARQDAT_PIPELINE_XS
+      warehouse: ARQDAT_PIPELINE_XS 
       user: '_' # Put any value here, it will be overwritten by a GitHub repository secret
       threads: 8 # Snowflake recommends 8 threads
